@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LyricLullaby</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles.css')}}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.1/css/fontawesome.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.2/css/all.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.2/css/v4-shims.css">
+    <link rel="stylesheet" href="https://www.bloodconnect.org/css/bootstrap.min.css">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static',filename='apple-touch-icon.png')}}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static',filename='logo.png')}}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static',filename='logo.png')}}">
+    <link rel="manifest" href="{{ url_for('static',filename='site.webmanifest')}}">
+</head>
+<body>
+    <section class="header">
+        <nav style="display: flex;">
+            <a href="/"><img src="{{url_for('static',filename='logo.png')}}" alt="Blood Connect"></a>
+            <div class="nav-links" id="navLinks">
+                <i class="fa fa-times-circle" onclick="hideMenu()"></i>                
+                <ul>
+                    <li><a href="/">Home</a> </li>
+                    <li><a href="/login/user">Login</a> </li>
+                    
+                </ul>
+            </div>
+            <i class="fa fa-bars" onclick="showMenu()"></i>        
+        </nav>
+        <div class="text-box">
+            <h1>LyricLullaby</h1>
+            <p>Connecting Donors and Seekers for life-saving blood donations. <br>Join Blood Connect today and make a difference in someone's life. 
+                Together, we can save lives</p>
+            <a href="/login/user" class="hero-btn">Get Started</a>
+        </div>
+
+    </section>
+
+
+    <section class="streaming-details">
+        <h1>Types of Music Streaming</h1>
+        <p>Explore different ways to stream music and discover the joy of listening to your favorite tunes anytime, anywhere.</p>
+        <div class="row">
+            <div class="type-of-stream">
+                <h3>On-Demand Streaming</h3>
+                <p>Access a vast library of songs and albums on-demand, tailored to your preferences.</p>
+            </div>
+            <div class="type-of-stream">
+                <h3>Playlist Curation</h3>
+                <p>Discover expertly curated playlists to suit various moods and occasions.</p>
+            </div>
+            <div class="type-of-stream">
+                <h3>Experience Lyrics</h3>
+                <p>Experience lyrics of all the songs from your favorite artists.</p>
+            </div>
+        </div>
+    </section>
+    
+    <section class= "testomonials" id="testomonials">
+        <div class="container-fluid h-60-min d-flex align-items-center justify-content-center py-5">
+            <div class="container">
+                <div class="mx-auto">
+                    <h2 class="f-40 fw-6 text-center color-white mb-0" style="color: #fff;">Our Impact</h2>
+                </div>
+                <div class="row">
+                    <div class="type-of-stream" style="text-align: center;">
+                        <h6>25000 +</h6>
+                        <p class="color-white fw-4 f-18">Songs in our Library</p>
+                    </div>
+                    <div class="type-of-stream" style="text-align: center;">
+                        <h6>500000 +</h6>
+                        <p class="color-white fw-6 f-30">Hours of Music Streamed</p>
+                    </div>
+                    <div class="type-of-stream" style="text-align: center;">
+                        <h6>1000 +</h6>
+                        <p class="color-white fw-4 f-18">Live Concerts Hosted</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <section class="cta">
+            <h1>Start Streaming Music Now</h1>
+            <a href="/login/user" class="hero-btn">Get Started</a>
+        </section>
+    </section>
+    
+    <section class="footer">
+        <h4>
+            About us
+        </h4>
+        <p>
+            Welcome to our music streaming platform! We are dedicated to providing a seamless and enjoyable music experience. Explore, discover, and immerse yourself in the world of music with us.
+
+        </p>
+        <div class="icons">
+            <i class="fa fa-facebook"></i>
+            <i class="fa fa-twitter"></i>
+            <i class="fa fa-instagram"></i>
+            <i class="fa fa-linkedin"></i>
+
+        </div>
+        
+    </section>
+    
+    <!-- JS For Toggle menu -->
+    <script>
+        var navLinks = document.getElementById("navLinks")
+        function showMenu(){
+            navLinks.style.right = "0";
+        }
+        function hideMenu(){
+            navLinks.style.right = "-200px";
+        }
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.1/css/fontawesome.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.2/css/all.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.2/css/v4-shims.css">
+    <link rel="stylesheet" href="https://www.bloodconnect.org/css/bootstrap.min.css">
+
+    <link rel="apple-touch-icon" sizes="180x180"
+        href="{{ url_for('static', filename='apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='logo.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='logo.png') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='site.webmanifest') }}">
+
+    <style>
+        .error-message {
+            color: red;
+            font-size: 0.8em;
+        }
+    </style>
+    <script>
+        function showTermsAndConditions() {
+            // Display Terms and Conditions dynamically
+            var termsSection = document.getElementById("termsSection");
+            termsSection.style.display = "block";
+        }
+
+        function enableSubmitButton() {
+            // Enable Submit button when the checkbox is checked
+            var termsCheckbox = document.getElementById("termsCheckbox");
+            var submitButton = document.getElementById("submitButton");
+            var errorMessage = document.getElementById("errorMessage");
+
+            if (termsCheckbox.checked) {
+                submitButton.disabled = false;
+                errorMessage.style.display = "none"; // Hide error message
+            } else {
+                submitButton.disabled = true;
+                errorMessage.style.display = "block"; // Show error message
+            }
+        }
+    </script>
+</head>
+
+<body>
+
+    <section class="sub-header">
+        <nav>
+            
+            
+            <a href="/{{ username }}/dashboard"><img src="{{ url_for('static', filename='logo.png') }}" alt="LyricLullaby"></a>
+            <div class="search-nav">
+                <div class="search-bar">
+                        <!-- Add your search bar code here -->
+                        <input type="text" id="searchInput" placeholder="Search for music...">
+                        <button type="button" class="search-button" onclick="toggleSearchBar()"><i class="fa fa-search"></i></button>
+                    </div>
+                <div class="nav-links" id="navLinks">
+                
+                    <i class="fa fa-times-circle" onclick="hideMenu()"></i>
+                    <ul>
+                        <li><a href="/{{ username }}/dashboard">Home</a></li>
+                        <li><a href="/{{ username }}/register_as_creator">Register as Creator</a></li>
+                        <!-- <li><a href="/{{ username }}/profile">Profile</a></li> -->
+                        {% if isAdmin == True %}
+                        <li><a href="/{{ username }}/admin_dashboard">Admin Profile</a></li>
+                        {% endif %}   
+                        <li><a href="/logout">Logout</a></li>
+
+                    </ul>
+                </div>
+            </div>
+            <i class="fa fa-bars" onclick="showMenu()"></i>
+        </nav>
+        <h1>Register As Creator</h1>
+
+    </section>
+
+    
+    <section class="dashboard-content">
+        <section class="compatible_donor">
+            <div class="welcome-msg">
+                <center>
+                    <h1>Register yourself as a creator in LyricLullaby</h1>
+                    <p style="font-size: 1.2em; font-weight: bold; color: #4CAF50;">🌟 Join the vibrant community of over 10,000 talented artists!</p>
+                    <p style="font-size: 1.1em;">🎤✨ Add excitement to people's lives with <span style="color: #FF5722;">your amazing songs, podcasts, and more!!</span></p>
+                    <p style="font-size: 1.1em;">🎶🎙️ Let your creativity shine and <span style="text-decoration: underline;">inspire others!</span> 🚀🌟</p>
+                    <br>
+                    <button class="hero-btn2" onclick="showTermsAndConditions()">
+                        Register as Creator!
+                    </button>
+                </center>
+            </div>
+
+             <!-- Terms and Conditions Section -->
+             <div class="welcome-msg" id="termsSection" style="display: none;">
+                <form method="POST">
+                    <ol>
+                        <li>By registering as a creator, you agree to abide by the LyricLullaby community guidelines.</li>
+                        <li>Your content must adhere to our family-friendly policy, ensuring a positive and inclusive environment.</li>
+                        <li>LyricLullaby reserves the right to review and moderate all submitted content for compliance with our standards.</li>
+                        <li>Creators are responsible for the originality and ownership of their submitted content.</li>
+                        <li>Any violation of the terms may result in the removal of your creator account.</li>
+                        <li>Creators are encouraged to engage with their audience respectfully and positively.</li>
+                        <li>LyricLullaby may feature your content for promotional purposes within the platform.</li>
+                        <li>Creators retain the rights to their original content, but LyricLullaby may use it for platform promotion.</li>
+                        <li>LyricLullaby is not responsible for any copyright infringement by creators.</li>
+                        <li>By checking the box below, you confirm your acceptance of these terms and conditions.</li>
+                    </ol>
+                    <input type="checkbox" id="termsCheckbox" onclick="enableSubmitButton()" checked="true"> I agree to the Terms and Conditions
+                    <br>
+                    <span class="error-message" id="errorMessage" style="display: none;">Please check the box to proceed.</span>
+                    <br>
+                    <center>
+                        <input type="submit" class="hero-btn2">
+                    </center>
+                </form>
+            </div>
+    </section>
+    <section class="footer">
+        <h4>
+            About us
+        </h4>
+        <p>
+            LyricLullaby is your musical haven, connecting you with your favorite tunes. Immerse yourself in the melodies,
+            create playlists, and share the magic of music. Your go-to platform for soulful sounds and rhythmic bliss!
+        </p>
+        
+        <div class="icons">
+            <i class="fa fa-faceboo<pk"></i>
+            <i class="fa fa-twitter"></i>
+            <i class="fa fa-instagram"></i>
+            <i class="fa fa-linkedin"></i>
+        </div>
+
+    </section>
+
+    <!-- JS For Toggle menu -->
+    <script>
+        var navLinks = document.getElementById("navLinks")
+
+        function showMenu() {
+            navLinks.style.right = "0";
+        }
+
+        function hideMenu() {
+            navLinks.style.right = "-200px";
+        }
+
+        function readLyrics(lyrics) {
+            // Implement the functionality to display lyrics as per your requirement
+            console.log(lyrics);
+        }
+        function toggleSearchBar() {
+            var searchInput = document.getElementById("searchInput");
+            searchInput.classList.toggle("expanded");
+
+            // If the search bar is expanded, focus on the input field
+            if (searchInput.classList.contains("expanded")) {
+                searchInput.focus();
+            }
+        }
+    </script>
+</body>
+
+</html>

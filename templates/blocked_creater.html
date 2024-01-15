@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,500&display=swap"
+    rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.1/css/fontawesome.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.2/css/all.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.2/css/v4-shims.css">
+    <link rel="stylesheet" href="https://www.bloodconnect.org/css/bootstrap.min.css">
+
+    <link rel="apple-touch-icon" sizes="180x180"
+        href="{{ url_for('static', filename='apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='logo.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='logo.png') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='site.webmanifest') }}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+        <!-- Add Bootstrap JS and Popper.js scripts here -->
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        
+
+        <!-- Add the Bootstrap JS and CSS links in your HTML file -->
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Bootstrap JS and Popper.js (optional) -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</head>
+
+<body>
+
+    <section class="sub-header">
+        <nav>
+            
+            
+            <a href="/{{ username }}/dashboard"><img src="{{ url_for('static', filename='logo.png') }}" alt="LyricLullaby"></a>
+            <div class="search-nav">
+
+                <div class="nav-links" id="navLinks">
+                
+                    <i class="fa fa-times-circle" onclick="hideMenu()"></i>
+                    <ul>
+                        <li><a href="/{{ username }}/dashboard">Home</a></li>
+                        <!-- <li><a href="/{{ username }}/register_as_creator">Register as Creator</a></li> -->
+                        <li><a href="/{{ username }}/creator_dashboard">Profile</a></li>
+                        <li><a href="/{{ username }}/search">Search Songs</a></li>
+                        <li><a href="/logout">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+            <i class="fa fa-bars" onclick="showMenu()"></i>
+        </nav>
+        <h1>{{ username }}'s Creator Dashboard</h1>
+
+    </section>
+
+    <section class="dashboard-content">
+        <section class="compatible_donor">
+
+            <div class="welcome-msg">
+                <center>
+                    <h1>Dear, {{ username }}</h1>
+                    <p style="font-size: 1.2em; font-weight: bold; color: #b9431c;">
+                        <pre>We regret to inform you that you are blacklisted by our admin community.
+We have received reports and it is evident that your recent actions have been against our community policies.
+We are taking away your creator privileges now.
+                            
+                        </pre>
+                    </p>
+                </center>
+               
+            </div>
+
+            <hr>
+        </section>
+
+           
+
+    </section>
+
+    <!-- JS For Toggle menu -->
+    <script>
+        var navLinks = document.getElementById("navLinks")
+
+        function showMenu() {
+            navLinks.style.right = "0";
+        }
+
+        function hideMenu() {
+            navLinks.style.right = "-200px";
+        }
+
+        function toggleSearchBar() {
+            var searchInput = document.getElementById("searchInput");
+            searchInput.classList.toggle("expanded");
+
+            // If the search bar is expanded, focus on the input field
+            if (searchInput.classList.contains("expanded")) {
+                searchInput.focus();
+            }
+        }
+        function toggleFormVisibility() {
+                    var form = document.getElementById("upload-form");
+                    form.style.display = (form.style.display === "none" || form.style.display === "") ? "block" : "none";
+        }
+        function displayLyrics(lyrics, songId) {
+            console.log('Display Lyrics:', lyrics, songId);
+
+            var lyricsContainer = document.getElementById(songId);
+            // document.getElementById('lyricsContainerValue').textContent = 'Value of lyricsContainer: ' + lyricsContainer; // Update this line to display the value
+            // Toggle the display property
+            lyricsContainer.style.display = (lyricsContainer.style.display === 'none' || lyricsContainer.style.display === '') ? 'block' : 'none';
+        }
+
+
+        function editSong(title, singer, releaseDate, lyrics, filePath, thumbnailUrl, genreId, albumName, songId) {
+            // Set the form's action attribute to the song ID for updating
+            document.getElementById('edit-form').action = `/update_song/${songId}`;
+            document.getElementById('edit-song_id').value = songId;  // Add this line to include the song ID
+
+            // Populate the form fields with song details
+            console.log('Edit Song:', title, singer, releaseDate, lyrics, filePath, thumbnailUrl, genreId, albumName, songId);
+            lyrics = unescape(lyrics);
+
+            document.getElementById('edit-title').value = title;
+            document.getElementById('edit-singer_name').value = singer;
+            document.getElementById('edit-release_date').value = releaseDate;
+            document.getElementById('edit-lyrics').value = lyrics;
+            // document.getElementById('edit-file').value = filePath; // Assuming you want to show the file path
+            document.getElementById('edit-thumbnail_url').value = thumbnailUrl;
+            document.getElementById('genre_id').value = genreId;
+            document.getElementById('edit-album_name').value = albumName;
+
+            // Show the form
+            document.getElementById('edit-form').style.display = 'block';
+        }
+        // Add this function to confirm song deletion
+        function confirmDelete(songId) {
+            var confirmDelete = confirm("Are you sure you want to delete this song?");
+            
+            if (confirmDelete) {
+                // If confirmed, send a POST request to the Flask route for deleting a song
+                document.getElementById('delete-song_id').value = songId;  // Add this line to include the song ID
+
+            }
+        }
+
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.1/css/fontawesome.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.2/css/all.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.2/css/v4-shims.css">
+    <link rel="stylesheet" href="https://www.bloodconnect.org/css/bootstrap.min.css">
+
+    <link rel="apple-touch-icon" sizes="180x180"
+        href="{{ url_for('static', filename='apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='logo.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='logo.png') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='site.webmanifest') }}">
+
+</head>
+<body>
+
+    <section class="sub-header">
+        <nav>
+            
+            
+            <a href="/{{ user.username }}/dashboard"><img src="{{ url_for('static', filename='logo.png') }}" alt="LyricLullaby"></a>
+            <div class="search-nav">
+  
+                <div class="nav-links" id="navLinks">
+                
+                    <i class="fa fa-times-circle" onclick="hideMenu()"></i>
+                    <ul>
+                        <li><a href="/{{ username }}/dashboard">Home</a></li>
+                        {% if isAdmin == True %}
+                            <li><a href="/{{ username }}/admin_dashboard">Admin Profile</a></li>
+                        {% else %}
+
+                            {% if isCreater == True %}
+                            <li><a href="/{{ username }}/creator_dashboard">Creator Profile</a></li>
+                            {% else %}
+                                <li><a href="/{{ username }}/register_as_creator">Register as Creator</a></li>
+                            {% endif %}
+                        {% endif %}  
+                                                
+                        <li><a href="/{{ username }}/search">Search Songs</a></li>
+                        <li><a href="/logout">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+            <i class="fa fa-bars" onclick="showMenu()"></i>
+        </nav>
+        <h1>{{ user.username }}'s Playlist Songs</h1>
+
+    </section>
+
+    <section class="dashboard-content">
+        <section class="compatible_donor">
+
+            <div class="welcome-msg">
+                <center>
+                    <h1>Welcome! {{ user.username }}</h1>
+                    <p>Explore your playlists here!!</p>
+                    
+                </center>
+            </div>
+            <div class="row" style="display: flex;flex-direction: column;">
+                <!-- Section 2: Recommended Tracks -->
+                <!-- Section 2: Recommended Tracks -->
+                <h3>🎵 Tracks from {{ playlist.playlist_name }}</h3>
+                <div class="song-list" style="display: flex;">
+                    {% for track in playlist_songs %}
+                        <div class="type-of-stream" style="display: flex; max-width: 250px; margin-top: 10px;margin-bottom: 10px; margin-left: 50px;">
+                            <div class="song-item" style="max-width: 200px;" >
+                                <img src="{{ track.thumbnail_url }}" alt="{{ track.title }} Thumbnail">
+                                <h4>{{ track.title }}</h4>
+                                <button class="hero-btn2" style="margin-top: 5px; margin-bottom: 5px;" onclick="playAudio('{{ track.title }}', '{{ track.file_path }}', '{{ user.username }}', '{{ track.song_id }}')">Read Lyrics / Play Audio</button>
+                                <audio id="audioPlayer" controls style="display: none;"></audio>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+
+            </div>
+            
+        </section>
+    </section>
+
+    <section class="footer">
+        <h4>
+            About us
+        </h4>
+        <p>
+            LyricLullaby is your musical haven, connecting you with your favorite tunes. Immerse yourself in the melodies,
+            create playlists, and share the magic of music. Your go-to platform for soulful sounds and rhythmic bliss!
+        </p>
+        
+        <div class="icons">
+            <i class="fa fa-facebook"></i>
+            <i class="fa fa-twitter"></i>
+            <i class="fa fa-instagram"></i>
+            <i class="fa fa-linkedin"></i>
+        </div>
+
+    </section>
+
+    <!-- JS For Toggle menu -->
+    <script>
+        var navLinks = document.getElementById("navLinks")
+
+        function showMenu() {
+            navLinks.style.right = "0";
+        }
+
+        function hideMenu() {
+            navLinks.style.right = "-200px";
+        }
+
+        function toggleSearchBar() {
+            var searchInput = document.getElementById("searchInput");
+            searchInput.classList.toggle("expanded");
+
+            // If the search bar is expanded, focus on the input field
+            if (searchInput.classList.contains("expanded")) {
+                searchInput.focus();
+            }
+        }
+        function playAudio(title, fullFilePath, username, songId) {
+            var audioPlayer = document.getElementById('audioPlayer');
+            var staticIndex = fullFilePath.indexOf('/static/');
+            
+            if (staticIndex !== -1) {
+                var filePathAfterStatic = fullFilePath.substring(staticIndex + 8); // 8 is the length of "/static/"
+                
+                // Construct the URL for the audio page
+                var audioUrl = "/" + username + "/" + songId;
+
+                audioPlayer.src = "/static/" + filePathAfterStatic; // Adjust this path based on your project structure
+                audioPlayer.play();
+
+                // Redirect the user to the audio page
+                window.location.href = audioUrl;
+            } else {
+                console.error("Invalid file path format. Couldn't find '/static/'.");
+            }
+        }
+    </script>
+</body>
+
+</html>

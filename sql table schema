@@ -1,0 +1,156 @@
+CREATE TABLE playlist (
+    playlist_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    playlist_name VARCHAR(255) NOT NULL,
+    user_id INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES user(user_id)
+);
+CREATE TABLE playlist_song (
+    playlist_id INT,
+    song_id INT,
+    PRIMARY KEY (playlist_id, song_id),
+    FOREIGN KEY (playlist_id) REFERENCES playlist(playlist_id),
+    FOREIGN KEY (song_id) REFERENCES song(song_id)
+);
+
+
+
+CREATE TABLE song(
+    song_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title VARCHAR(255) NOT NULL,
+    singer_name VARCHAR(255) NOT NULL,
+    release_date DATE,
+    lyrics TEXT,
+    file_path VARCHAR(255) NOT NULL,
+    album_id INT,
+    genre_id INT,
+    ratings INT CHECK (ratings BETWEEN 1 AND 5),
+    duration TIME,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    thumbnail_url VARCHAR(255),
+    creater_id INT,
+    FOREIGN KEY (album_id) REFERENCES album(album_id),
+    FOREIGN KEY (genre_id) REFERENCES genre(genre_id),
+    FOREIGN KEY (creater_id) REFERENCES creater_user(creater_user_id)
+);
+
+
+
+CREATE TABLE album (
+    album_id INT AUTO_INCREMENT PRIMARY KEY,
+    album_name VARCHAR(255) NOT NULL,
+    genre_id INT,
+    creater_user_id INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (genre_id) REFERENCES genre(genre_id),
+    FOREIGN KEY (creater_user_id) REFERENCES creater_user(creater_user_id)
+);
+
+CREATE TABLE genre (
+    genre_id INT AUTO_INCREMENT PRIMARY KEY,
+    genre_name VARCHAR(255) NOT NULL,
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+ 
+
+-- Recreate the normal_user table with auto-incrementing primary key
+CREATE TABLE normal_user (
+    normal_user_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    FOREIGN KEY (user_id) REFERENCES user(userid)
+);
+
+-- Recreate the creater_user table with auto-incrementing primary key
+CREATE TABLE creater_user (
+    creater_user_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    FOREIGN KEY (user_id) REFERENCES user(userid)
+);
+
+-- Recreate the admin_user table with auto-incrementing primary key
+CREATE TABLE admin_user (
+    admin_user_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    FOREIGN KEY (user_id) REFERENCES user(userid)
+);
+
+
+
+CREATE TABLE user (
+    userid INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    dob DATE NOT NULL,
+    date_of_creating_account TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+ALTER TABLE playlist
+ADD COLUMN thumbnail_url VARCHAR(255);
+ALTER TABLE song
+ADD COLUMN thumbnail_url VARCHAR(255);
+ALTER TABLE album
+ADD COLUMN thumbnail_url VARCHAR(255);
+ALTER TABLE genre
+ADD COLUMN thumbnail_url VARCHAR(255);
+
+
+INSERT INTO genre (genre_name, description) VALUES
+    ('Pop', 'Popular music with catchy tunes and a broad appeal.'),
+    ('Rock', 'A genre of popular music that originated as rock and roll in the United States.'),
+    ('Hip Hop', 'A genre of popular music that includes rap and urban styles.'),
+    ('Electronic', 'Music produced using electronic technology.'),
+    ('Country', 'A genre of American popular music that originated in the rural regions.'),
+    ('Jazz', 'A genre of music that originated in African American communities in the late 19th and early 20th centuries.'),
+    ('Classical', 'A traditional and long-established style of music.'),
+    ('R&B', 'Rhythm and Blues, a genre of popular African American music that originated in the 1940s.'),
+    ('Reggae', 'A style of popular music with a strongly accented subsidiary beat, originating in Jamaica.'),
+    ('Melody', 'Focuses on the beauty of melodies and harmonies.') -- Melody genre added
+    -- Add more genres as needed
+;
+
+
+CREATE TABLE ratings (
+    user_id INT,
+    song_id INT,
+    rating_value INT CHECK (rating_value BETWEEN 1 AND 5),
+    PRIMARY KEY (user_id, song_id),
+    FOREIGN KEY (user_id) REFERENCES user(userid),
+    FOREIGN KEY (song_id) REFERENCES song(song_id)
+);
+
+
+CREATE TABLE blacklisted_users (
+    blacklisted_user_id INT AUTO_INCREMENT PRIMARY KEY,
+    creater_user_id INT,
+    FOREIGN KEY (creater_user_id) REFERENCES creater_user(creater_user_id)
+);
+
+
+
+search_queries: 
+
+like,
+if search_query!=' ':
+	give sqlAlchemy for,
+		 song_list = select * from song where song.title like f"{search_query}"...
+
+if creater_name_query!=' ':
+	give sqlAlchemy for:
+		  creater_user = select *
+	  			from creater_user , user
+	  			where user.user_id = creater_user.user_id . first();
+		  song_list = select * from song
+		  		where song.creater_id = creater_user.creater_user_id
+
+if genre_query!=' ':
+	song_list = select * from song  where song.genre_id = genre_query;
+	
+if ratings_query!='':
+	song_list = select * from song where avg_rating > rating_query;
+          		
+          		
+          			
